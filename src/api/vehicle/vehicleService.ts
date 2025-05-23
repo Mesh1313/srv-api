@@ -124,7 +124,7 @@ export class VehicleService {
         return ServiceResponse.failure(`Vehicle with ID ${id} not found`, null, StatusCodes.NOT_FOUND);
       }
 
-      await VehicleRepository.delete({ id });
+      await VehicleRepository.remove({ id });
 
       return ServiceResponse.success("Vehicle deleted succesfully", null);
     } catch (error) {

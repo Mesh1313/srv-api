@@ -3,15 +3,11 @@ import express, { type Express } from "express";
 import helmet from "helmet";
 import { pino } from "pino";
 
-import { openAPIRouter } from "@/api-docs/openAPIRouter";
-import { exampleRouter } from "@/api/example/exampleRouter";
-import { userRouter } from "@/api/user/userRouter";
 import errorHandler from "@/common/middleware/errorHandler";
 import rateLimiter from "@/common/middleware/rateLimiter";
 import requestLogger from "@/common/middleware/requestLogger";
 import { env } from "@/common/utils/envConfig";
 import { initializeDatabase } from "@/db/data-source";
-import { vehicleRouter } from "./api/vehicle/vehicleRouter";
 
 const logger = pino({ name: "server start" });
 const app: Express = express();
@@ -57,7 +53,6 @@ const initializeApp = async () => {
 
     // Now import and setup routes (after DB is initialized)
     const { openAPIRouter } = await import("@/api-docs/openAPIRouter");
-    const { exampleRouter } = await import("@/api/example/exampleRouter");
     const { userRouter } = await import("@/api/user/userRouter");
     const { vehicleRouter } = await import("@/api/vehicle/vehicleRouter");
 
@@ -65,7 +60,6 @@ const initializeApp = async () => {
     app.use("/swagger", openAPIRouter);
 
     // Routes
-    app.use("/example", exampleRouter);
     app.use("/users", userRouter);
     app.use("/vehicles", vehicleRouter);
 

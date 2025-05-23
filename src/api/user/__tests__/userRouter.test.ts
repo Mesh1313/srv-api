@@ -4,13 +4,24 @@ import request from "supertest";
 import type { User } from "@/api/user/userModel";
 import { users } from "@/api/user/userRepository";
 import type { ServiceResponse } from "@/common/models/serviceResponse";
-import { app } from "@/server";
+import { closeTestApp, initTestApp } from "@/test/testApp";
+import type { Express } from "express";
 
 describe("User API Endpoints", () => {
+  let app: Express;
+
+  beforeAll(async () => {
+    app = await initTestApp();
+  });
+
+  afterAll(async () => {
+    await closeTestApp();
+  });
+
   describe("GET /users", () => {
     it("should return a list of users", async () => {
       // Act
-      const response = await request(app).get("/users");
+      const response = await request(app!).get("/users");
       const responseBody: ServiceResponse<User[]> = response.body;
 
       // Assert
@@ -29,7 +40,7 @@ describe("User API Endpoints", () => {
       const expectedUser = users.find((user) => user.id === testId) as User;
 
       // Act
-      const response = await request(app).get(`/users/${testId}`);
+      const response = await request(app!).get(`/users/${testId}`);
       const responseBody: ServiceResponse<User> = response.body;
 
       // Assert
@@ -45,7 +56,7 @@ describe("User API Endpoints", () => {
       const testId = Number.MAX_SAFE_INTEGER;
 
       // Act
-      const response = await request(app).get(`/users/${testId}`);
+      const response = await request(app!).get(`/users/${testId}`);
       const responseBody: ServiceResponse = response.body;
 
       // Assert
@@ -58,7 +69,7 @@ describe("User API Endpoints", () => {
     it("should return a bad request for invalid ID format", async () => {
       // Act
       const invalidInput = "abc";
-      const response = await request(app).get(`/users/${invalidInput}`);
+      const response = await request(app!).get(`/users/${invalidInput}`);
       const responseBody: ServiceResponse = response.body;
 
       // Assert
