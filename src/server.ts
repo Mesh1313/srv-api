@@ -27,12 +27,12 @@ app.use(rateLimiter);
 // Request logging
 app.use(requestLogger);
 
+// Swagger UI
+app.use("/swagger", openAPIRouter);
+
 // Routes
 app.use("/example", exampleRouter);
 app.use("/users", userRouter);
-
-// Swagger UI
-app.use(openAPIRouter);
 
 // Error handlers
 app.use(errorHandler());

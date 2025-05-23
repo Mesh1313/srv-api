@@ -1,0 +1,97 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { Customer } from "./Customer";
+import { Invoice } from "./Invoice";
+import { Vehicle } from "./Vehicle";
+import { WorkOrderService } from "./WorkOrderService";
+
+export enum WorkOrderStatus {
+  PENDING = "pending",
+  IN_PROGRESS = "in_progress",
+  COMPLETED = "completed",
+  CANCELED = "canceled",
+}
+
+@Entity("work_orders")
+export class WorkOrder {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: "text", unique: true })
+  orderNumber: string;
+
+  @Column({
+    type: "enum",
+    enum: WorkOrderStatus,
+    default: WorkOrderStatus.PENDING,
+  })
+  status: WorkOrderStatus;
+
+  @Column({ type: "int", nullable: true })
+  technicianId: number;
+
+  @Column("text", { nullable: true })
+  customerConcerns: string;
+
+  @Column("text", { nullable: true })
+  diagnosticNotes: string;
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  laborHours: number;
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  partsTotal: number;
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  laborTotal: number;
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  taxAmount: number;
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  grandTotal: number;
+
+  @Column({ type: "timestamp", nullable: true })
+  startDate: Date;
+
+  @Column({ type: "timestamp", nullable: true })
+  completionDate: Date;
+
+  @ManyToOne(
+    () => Customer,
+    (customer) => customer.workOrders,
+  )
+  customer: Customer;
+
+  @ManyToOne(
+    () => Vehicle,
+    (vehicle) => vehicle.workOrders,
+  )
+  vehicle: Vehicle;
+
+  @OneToMany(
+    () => WorkOrderService,
+    (workOrderService) => workOrderService.workOrder,
+    { cascade: true },
+  )
+  services: WorkOrderService[];
+
+  @OneToMany(
+    () => Invoice,
+    (invoice) => invoice.workOrder,
+  )
+  invoices: Invoice[];
+
+  @CreateDateColumn({ type: "timestamp" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp" })
+  updatedAt: Date;
+}

@@ -1,4 +1,4 @@
-FROM node:22.13.1-slim
+FROM node:22-slim
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -6,8 +6,8 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install app dependencies
-RUN npm ci
+# Install all dependencies with clean npm cache
+RUN npm cache clean --force && npm install
 
 # Bundle app source
 COPY . .
@@ -19,4 +19,4 @@ RUN npm run build
 EXPOSE 8080
 
 # Start the app
-CMD npm run start
+CMD npm run dev

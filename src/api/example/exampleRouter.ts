@@ -20,3 +20,15 @@ exampleRouter.get("/", (_req: Request, res: Response) => {
   const serviceResponse = ServiceResponse.success("Example response OK", null);
   return handleServiceResponse(serviceResponse, res);
 });
+
+exampleRegistry.registerPath({
+  method: "get",
+  path: "/example/test",
+  tags: ["Example Status"],
+  responses: createApiResponse(z.null(), "Success"),
+});
+
+exampleRouter.get("/test", (_req: Request, res: Response) => {
+  const serviceResponse = ServiceResponse.success("Test Response", { hello: "World" });
+  return handleServiceResponse(serviceResponse, res);
+});
