@@ -2,9 +2,10 @@ import { OpenAPIRegistry, OpenApiGeneratorV3 } from "@asteasolutions/zod-to-open
 
 import { exampleRegistry } from "@/api/example/exampleRouter";
 import { userRegistry } from "@/api/user/userRouter";
+import { vehicleRegistry } from "@/api/vehicle/vehicleRouter";
 
 export function generateOpenAPIDocument() {
-  const registry = new OpenAPIRegistry([exampleRegistry, userRegistry]);
+  const registry = new OpenAPIRegistry([exampleRegistry, userRegistry, vehicleRegistry]);
   const generator = new OpenApiGeneratorV3(registry.definitions);
 
   return generator.generateDocument({
