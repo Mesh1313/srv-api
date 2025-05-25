@@ -22,7 +22,7 @@ services:
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-      - DB_NAME=dev_resources_db
+      - DB_NAME=srv_db
       - DB_SYNC=true
     command: npm run dev
 
@@ -33,7 +33,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=dev_resources_db
+      - POSTGRES_DB=srv_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

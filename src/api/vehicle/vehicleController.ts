@@ -15,15 +15,13 @@ class VehicleController {
   };
 
   createVehicle: RequestHandler = async (req: Request, res: Response) => {
-    const vehicleData = JSON.parse(req.body);
-    const serviceResponse = await vehicleService.create(vehicleData);
+    const serviceResponse = await vehicleService.create(req.body);
     return handleServiceResponse(serviceResponse, res);
   };
 
   updateVehicle: RequestHandler = async (req: Request, res: Response) => {
     const id = Number.parseInt(req.params.id as string);
-    const vehicleData = JSON.parse(req.body);
-    const serviceResponse = await vehicleService.update(id, vehicleData);
+    const serviceResponse = await vehicleService.update(id, req.body);
     return handleServiceResponse(serviceResponse, res);
   };
 
