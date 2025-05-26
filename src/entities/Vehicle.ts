@@ -1,3 +1,4 @@
+import type { Vehicle } from "@/api/vehicle/vehicleModel";
 import {
   Column,
   CreateDateColumn,
@@ -8,11 +9,12 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Appointment } from "./Appointment";
-import { Customer } from "./Customer";
+import { BaseEntity } from "./BaseEntity";
+import { CustomerEntity } from "./Customer";
 import { WorkOrder } from "./WorkOrder";
 
 @Entity("vehicles")
-export class Vehicle {
+export class VehicleEntity extends BaseEntity<Vehicle> {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -53,10 +55,10 @@ export class Vehicle {
   recurringIssues: any[];
 
   @ManyToOne(
-    () => Customer,
+    () => CustomerEntity,
     (customer) => customer.vehicles,
   )
-  owner: Customer;
+  owner: CustomerEntity;
 
   @OneToMany(
     () => WorkOrder,
@@ -75,4 +77,27 @@ export class Vehicle {
 
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
+
+  /**
+   * Converts the TypeORM entity to a plain Vehicle object
+   * This ensures type safety and removes any ORM-specific properties
+   */
+  toPlainObject() {
+    return {
+      id: this.id,
+      vin: this.vin,
+      make: this.make,
+      model: this.model,
+      year: this.year,
+      mileage: this.mileage,
+      licensePlate: this.licensePlate,
+      color: this.color,
+      engineType: this.engineType,
+      transmission: this.transmission,
+      lastServiceDate: this.lastServiceDate,
+      ownerId: this.owner.id,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
 }

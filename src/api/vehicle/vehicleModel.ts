@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export type Vehicle = z.infer<typeof VehicleSchema>;
 export const VehicleSchema = z.object({
+  id: z.number(),
   make: z.string(),
   model: z.string(),
   year: z.number(),
@@ -11,11 +12,15 @@ export const VehicleSchema = z.object({
   engineType: z.string(),
   transmission: z.string(),
   mileage: z.number().int(),
+  lastServiceDate: z.date(),
   ownerId: z.number().int(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const CreateVehicleSchema = z.object({
   body: z.object({
+    id: z.number().refine((num) => num > 0, "ID must be a positive number"),
     make: z.string().min(1, "Make is required"),
     model: z.string().min(1, "Model is required"),
     year: z.number().int().min(1900, "Year must be after 1900"),

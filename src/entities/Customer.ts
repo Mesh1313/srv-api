@@ -1,10 +1,11 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Appointment } from "./Appointment";
-import { Vehicle } from "./Vehicle";
+import { BaseEntity } from "./BaseEntity";
+import { VehicleEntity } from "./Vehicle";
 import { WorkOrder } from "./WorkOrder";
 
 @Entity("customers")
-export class Customer {
+export class CustomerEntity extends BaseEntity<any> {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -45,10 +46,10 @@ export class Customer {
   communicationHistory: any[];
 
   @OneToMany(
-    () => Vehicle,
+    () => VehicleEntity,
     (vehicle) => vehicle.owner,
   )
-  vehicles: Vehicle[];
+  vehicles: VehicleEntity[];
 
   @OneToMany(
     () => Appointment,
@@ -67,4 +68,8 @@ export class Customer {
 
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
+
+  toPlainObject() {
+    throw new Error("Method not implemented.");
+  }
 }

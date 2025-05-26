@@ -1,7 +1,7 @@
 import { ServiceResponse } from "@/common/models/serviceResponse";
 import { AppDataSource } from "@/db/data-source";
-import { Customer } from "@/entities/Customer";
-import { Vehicle as VehicleEntity } from "@/entities/Vehicle";
+import { CustomerEntity } from "@/entities/Customer";
+import { VehicleEntity } from "@/entities/Vehicle";
 import { logger } from "@/server";
 import { StatusCodes } from "http-status-codes";
 import type { Vehicle } from "./vehicleModel";
@@ -12,7 +12,7 @@ export class VehicleService {
     try {
       const { ownerId, ...vehicleDetails } = vehicleData;
 
-      const customerRepository = AppDataSource.getRepository(Customer);
+      const customerRepository = AppDataSource.getRepository(CustomerEntity);
       const ownerEntity = await customerRepository.findOneBy({ id: ownerId });
 
       if (!ownerEntity) {
@@ -87,7 +87,7 @@ export class VehicleService {
   async update(id: number, vehicleData: Partial<Vehicle>): Promise<ServiceResponse<VehicleEntity | null>> {
     try {
       const { ownerId } = vehicleData;
-      const customerRepository = AppDataSource.getRepository(Customer);
+      const customerRepository = AppDataSource.getRepository(CustomerEntity);
       const ownerEntity = await customerRepository.findOneBy({ id: ownerId });
 
       if (!ownerEntity) {

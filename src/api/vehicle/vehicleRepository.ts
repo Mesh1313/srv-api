@@ -1,16 +1,16 @@
 import { AppDataSource } from "@/db/data-source";
-import { Vehicle } from "@/entities/Vehicle";
+import { VehicleEntity } from "@/entities/Vehicle";
 import type { Repository } from "typeorm";
 
-export const getVehicleRepository = (): Repository<Vehicle> => {
+export const getVehicleRepository = (): Repository<VehicleEntity> => {
   if (!AppDataSource.isInitialized) {
     throw new Error("DataSource is not initialized. Make sure to call initializeDatabase() first.");
   }
-  return AppDataSource.getRepository(Vehicle);
+  return AppDataSource.getRepository(VehicleEntity);
 };
 
 export const VehicleRepositoryMethods = {
-  async findByMakeAndModel(make: string, model: string): Promise<Vehicle[]> {
+  async findByMakeAndModel(make: string, model: string): Promise<VehicleEntity[]> {
     const repo = getVehicleRepository();
     return repo
       .createQueryBuilder("vehicle")
@@ -19,7 +19,7 @@ export const VehicleRepositoryMethods = {
       .getMany();
   },
 
-  async findByVin(vin: string): Promise<Vehicle | null> {
+  async findByVin(vin: string): Promise<VehicleEntity | null> {
     const repo = getVehicleRepository();
     return repo.findOneBy({ vin });
   },

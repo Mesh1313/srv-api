@@ -1,11 +1,11 @@
-import { Customer } from "@/entities/Customer";
-import { Vehicle } from "@/entities/Vehicle";
 import type { MigrationInterface, QueryRunner } from "typeorm";
+import { CustomerEntity } from "../entities/Customer";
+import { VehicleEntity } from "../entities/Vehicle";
 
 export class InitializeData1748202001500 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const customerRepository = queryRunner.manager.getRepository(Customer);
-    const vehicleRepository = queryRunner.manager.getRepository(Vehicle);
+    const customerRepository = queryRunner.manager.getRepository(CustomerEntity);
+    const vehicleRepository = queryRunner.manager.getRepository(VehicleEntity);
 
     // Create customers
     const customer1 = customerRepository.create({
@@ -70,8 +70,8 @@ export class InitializeData1748202001500 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    const vehicleRepository = queryRunner.manager.getRepository(Vehicle);
-    const customerRepository = queryRunner.manager.getRepository(Customer);
+    const vehicleRepository = queryRunner.manager.getRepository(VehicleEntity);
+    const customerRepository = queryRunner.manager.getRepository(CustomerEntity);
 
     // Remove vehicles first (due to foreign key constraint)
     await vehicleRepository.delete({ vin: "JT2BG22K123456789" });
