@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Customer } from "./Customer";
+import { CustomerEntity } from "./Customer";
 import { Invoice } from "./Invoice";
-import { Vehicle } from "./Vehicle";
+import { VehicleEntity } from "./Vehicle";
 import { WorkOrderService } from "./WorkOrderService";
 
 export enum WorkOrderStatus {
@@ -65,16 +65,16 @@ export class WorkOrder {
   completionDate: Date;
 
   @ManyToOne(
-    () => Customer,
+    () => CustomerEntity,
     (customer) => customer.workOrders,
   )
-  customer: Customer;
+  customer: CustomerEntity;
 
   @ManyToOne(
-    () => Vehicle,
+    () => VehicleEntity,
     (vehicle) => vehicle.workOrders,
   )
-  vehicle: Vehicle;
+  vehicle: VehicleEntity;
 
   @OneToMany(
     () => WorkOrderService,

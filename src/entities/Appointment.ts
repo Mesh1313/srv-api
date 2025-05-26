@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Customer } from "./Customer";
-import { Vehicle } from "./Vehicle";
+import { CustomerEntity } from "./Customer";
+import { VehicleEntity } from "./Vehicle";
 
 export enum AppointmentStatus {
   SCHEDULED = "scheduled",
@@ -45,16 +45,16 @@ export class Appointment {
   lastReminderDate: Date;
 
   @ManyToOne(
-    () => Customer,
+    () => CustomerEntity,
     (customer) => customer.appointments,
   )
-  customer: Customer;
+  customer: CustomerEntity;
 
   @ManyToOne(
-    () => Vehicle,
+    () => VehicleEntity,
     (vehicle) => vehicle.appointments,
   )
-  vehicle: Vehicle;
+  vehicle: VehicleEntity;
 
   @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;
